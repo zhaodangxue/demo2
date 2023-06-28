@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat Room</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript">
+    var socket = new WebSocket("ws://localhost:8080/chat"); // 连接 WebSocket 服务器
+
+    socket.onopen = function(event) {
+      console.log("Connected to WebSocket");
+    }
+
+    socket.onmessage = function(event) {
+      var message = event.data;
+      // 处理收到的消息，如将消息显示在页面上的聊天窗口中
+      $("#chatWindow").append("<p>" + message + "</p>");
+    }
+
+    function sendMessage() {
+      var message = $("#messageInput").val();
+      socket.send(message); // 发送消息给服务器
+      $("#messageInput").val(""); // 清空输入框
+    }
+  </script>
+</head>
+<body>
+<div id="chatWindow"></div>
+<input type="text" id="messageInput">
+<button onclick="sendMessage()">Send</button>
+</body>
+</html>
